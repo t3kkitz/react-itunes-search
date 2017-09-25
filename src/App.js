@@ -47,7 +47,7 @@ class App extends Component {
     this.loadCards()
   }
 
-  loadCards = () => {
+  loadCards() {
     if (this.state.query.length < 2) return;
     const url = getAPIurl(this.state.query, this.state.media);
 
