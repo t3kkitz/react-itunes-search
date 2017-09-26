@@ -12,7 +12,6 @@ class App extends Component {
   }
 
   render() {
-
     return (
       <div className="App" onSubmit={this.handleFormSubmit}>
         <form>
@@ -35,22 +34,24 @@ class App extends Component {
     );
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.media !== this.state.media || prevState.query !== this.state.query)
+      this.loadCards()
+  }
+
   handleMediaChange = (e) => {
-    this.setState({media: e.target.value}, () => this.loadCards())
+    this.setState({media: e.target.value})
   }
 
   handleFormSubmit = (e) => e.preventDefault();
 
   handleInputChange = (e) => {
-    const val = e.target.value;
-    if (!val) this.clearForm();
-    this.setState({query: val}, () => {
-      if (val.length > 2) this.loadCards();
-    });
+    this.setState({query: e.target.value});
   }
 
   loadCards() {
-    const url = getAPIurl(this.state.query, this.state.media);
+    const {query, media} = this.state;
+    const url            = getAPIurl(query, media);
 
     this.setState({
       loading: true,
@@ -71,14 +72,6 @@ class App extends Component {
         this.setState({loading: false})
       })
   }
-
-  clearForm() {
-    this.setState({
-      entities: [],
-      loaded:   false
-    })
-  }
-
 }
 
 export default App;
