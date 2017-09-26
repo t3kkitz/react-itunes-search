@@ -1,14 +1,22 @@
 import React, { Component } from 'react';
-import { getAPIurl } from './utils';
+import {
+  getAPIurl,
+  debounce
+} from './utils';
 import CardList from './components/CardList'
 
 class App extends Component {
+  constructor() {
+    super()
+    this.loadCards = debounce(this.loadCards, 500);
+  }
+
   state = {
-    media:    'all',
-    query:    '',
+    media: 'all',
+    query: '',
     entities: [],
-    loading:  false,
-    loaded:   false
+    loading: false,
+    loaded: false
   }
 
   render() {
@@ -71,11 +79,11 @@ class App extends Component {
       })
   }
 
-  clearForm(){
+  clearForm() {
     this.setState({
       entities: [],
-      loading: false,
-      loaded: false
+      loading:  false,
+      loaded:   false
     })
   }
 

@@ -5,3 +5,11 @@ export function getAPIurl(query, media) {
 export function randomId() {
   return Math.random().toString().slice(-6);
 }
+
+export function debounce(func, wait) {
+  let timeout
+  return function(...args) {
+    clearTimeout(timeout)
+    timeout = setTimeout(() => func.apply(this, args), wait)
+  }
+}
