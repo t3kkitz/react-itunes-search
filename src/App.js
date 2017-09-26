@@ -36,19 +36,20 @@ class App extends Component {
   }
 
   handleMediaChange = (e) => {
-    this.setState({media: e.target.value})
-    this.loadCards()
+    this.setState({media: e.target.value}, () => this.loadCards())
   }
 
   handleFormSubmit = (e) => e.preventDefault();
 
   handleInputChange = (e) => {
-    this.setState({query: e.target.value})
-    this.loadCards()
+    const val = e.target.value;
+    if (!val) this.clearForm();
+    this.setState({query: val}, () => {
+      if (val.length > 2) this.loadCards();
+    });
   }
 
   loadCards() {
-    if (this.state.query.length < 2) return;
     const url = getAPIurl(this.state.query, this.state.media);
 
     this.setState({
@@ -67,10 +68,15 @@ class App extends Component {
       })
       .catch(e => {
         console.log(e)
-        this.setState({
-          loading: false
-        })
+        this.setState({loading: false})
       })
+  }
+
+  clearForm() {
+    this.setState({
+      entities: [],
+      loaded:   false
+    })
   }
 
 }

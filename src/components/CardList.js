@@ -1,10 +1,11 @@
 import React from 'react';
 import Card from './Card';
+import { randomId } from '../utils';
 
 function CardList(props) {
   const { entities } = props;
   if (!entities.length) return null;
-  const cardItems = entities.map(card => <Card key={card.trackId} {...card} />);
+  const cardItems = entities.map(card => <Card key={randomId} {...card} />);
   return (
     <div>
       {cardItems}
