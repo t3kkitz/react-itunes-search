@@ -15,7 +15,7 @@ class App extends Component {
     return (
       <div className="App" onSubmit={this.handleFormSubmit}>
         <form>
-          <input type="text" onChange={this.handleInputChange}/>
+          <input type="text" onChange={this.handleInputChange} autoFocus/>
           <select value={this.state.media} onChange={this.handleMediaChange}>
             <option value="movie">Movie</option>
             <option value="podcast">Podcast</option>
@@ -35,19 +35,17 @@ class App extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.media !== this.state.media || prevState.query !== this.state.query)
-      this.loadCards()
+    if (prevState.media !== this.state.media
+      || (prevState.query !== this.state.query && this.state.query.length > 3)) this.loadCards();
+
+    if (prevState.query !== this.state.query && !this.state.query.length) this.clearForm();
   }
 
-  handleMediaChange = (e) => {
-    this.setState({media: e.target.value})
-  }
+  handleMediaChange = (e) => this.setState({media: e.target.value})
 
   handleFormSubmit = (e) => e.preventDefault();
 
-  handleInputChange = (e) => {
-    this.setState({query: e.target.value});
-  }
+  handleInputChange = (e) => this.setState({query: e.target.value})
 
   loadCards() {
     const {query, media} = this.state;
@@ -72,6 +70,15 @@ class App extends Component {
         this.setState({loading: false})
       })
   }
+
+  clearForm(){
+    this.setState({
+      entities: [],
+      loading: false,
+      loaded: false
+    })
+  }
+
 }
 
 export default App;

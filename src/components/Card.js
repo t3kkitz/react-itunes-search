@@ -6,7 +6,7 @@ const Wrapper = styled.a`
   min-height: 180px;
   margin: 8px;
   display: inline-block;
-  background: #CCCCCC url(${props => props.artwork}) center/cover no-repeat;
+  //background: #CCCCCC url(${props => props.artwork}) center/cover no-repeat;
 `;
 
 function Card(props) {
@@ -14,6 +14,8 @@ function Card(props) {
     trackViewUrl,
     collectionViewUrl,
     artworkUrl100,
+    artistName,
+    trackName
   } = props;
   const artwork = artworkUrl100.replace('100x100', '200x200');
 
@@ -22,8 +24,9 @@ function Card(props) {
       href={trackViewUrl || collectionViewUrl}
       target="_blank"
       rel="noopener noreferrer"
-      artwork={artwork}
-    />
+    >
+      <img src={artwork} alt={`${artistName} - ${trackName}`}/>
+    </Wrapper>
   );
 }
 
