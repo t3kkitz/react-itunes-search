@@ -2,7 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  width: 200px;
+  width: calc(100%/6 - 16px);
+  min-width:  200px;
   margin: 8px;
   background:#FFFFFF;
   border-radius: 2px;
@@ -41,10 +42,7 @@ const Header = styled.div`
   }
   .artist{
     font-size: 15px;
-    color:#999999;  
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    color:#999999;
   }
 `;
 
@@ -62,11 +60,15 @@ float: right;
 function Card(props) {
   const {kind, artistName} = props;
 
-  const artwork     = props.artworkUrl100.replace('100x100', '200x200');
+  const artwork     = props.artworkUrl100.replace('100x100', '300x300');
   const name        = props.trackName || props.collectionName;
   const description = props.longDescription || props.description;
   const viewUrl     = props.trackViewUrl || props.collectionViewUrl;
-  const price       = props.trackPrice || props.collectionPrice || props.price || 0;
+  const price       = (() => {
+    let price = props.trackPrice || props.collectionPrice || props.price || 0;
+    if (typeof price === 'number' && price !== -1) return price;
+    return undefined;
+  })();
   const releaseDate = new Date(props.releaseDate).toLocaleDateString();
 
   return (
@@ -75,7 +77,6 @@ function Card(props) {
                   target="_blank"
                   rel="noopener noreferrer">
         <Artwork src={artwork} alt={name}/>
-
       </ArtworkBox>
       <Header>
         <div className="name">{name}</div>
@@ -84,7 +85,7 @@ function Card(props) {
       </Header>
       <Extra>
         <span className="releaseDate" title={`Release on ${releaseDate}`}>{releaseDate}</span>
-        {typeof price === 'number' && price !== -1 && <span>$&nbsp;{price}</span>}
+        {price && <span>$&nbsp;{price}</span>}
       </Extra>
     </Wrapper>
   );

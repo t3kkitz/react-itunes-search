@@ -3,7 +3,8 @@ import {
   getAPIurl,
   debounce
 } from './utils';
-import CardList from './components/CardList'
+import CardList from './components/CardList';
+import Message from './components/Message';
 
 class App extends Component {
   constructor() {
@@ -12,19 +13,19 @@ class App extends Component {
   }
 
   state = {
-    media: 'all',
-    query: 'zeds dead',
+    media:    'all',
+    query:    '',
     entities: [],
-    loading: false,
-    loaded: false
+    status:   'start'
   }
 
   render() {
+    const {status, entities, query, media} = this.state;
     return (
       <div className="App" onSubmit={this.handleFormSubmit}>
         <form>
-          <input type="text" onChange={this.handleInputChange} value={this.state.query} autoFocus/>
-          <select value={this.state.media} onChange={this.handleMediaChange}>
+          <input type="text" onChange={this.handleInputChange} value={query} autoFocus/>
+          <select value={media} onChange={this.handleMediaChange}>
             <option value="movie">Movie</option>
             <option value="podcast">Podcast</option>
             <option value="music">Music</option>
@@ -37,20 +38,18 @@ class App extends Component {
             <option value="all">All</option>
           </select>
         </form>
-        <CardList entities={this.state.entities}/>
+
+        {status === 'loaded'
+          ? <CardList entities={entities}/>
+          : <Message status={status}/>}
+
       </div>
     );
   }
 
-  componentDidMount(){
-    this.loadCards()
-  }
-
   componentDidUpdate(prevProps, prevState) {
     if (prevState.media !== this.state.media
-      || (prevState.query !== this.state.query && this.state.query.length > 3)) this.loadCards();
-
-    if (prevState.query !== this.state.query && !this.state.query.length) this.clearForm();
+      || (prevState.query !== this.state.query)) this.loadCards();
   }
 
   handleMediaChange = (e) => this.setState({media: e.target.value})
@@ -64,33 +63,29 @@ class App extends Component {
     const url            = getAPIurl(query, media);
 
     this.setState({
-      loading: true,
-      loaded:  false
+      status: 'loading'
     })
 
     fetch(url)
       .then(res => res.json())
       .then(res => {
+
         this.setState({
           entities: res.results,
-          loading:  false,
-          loaded:   true
+          status:   !!res.results.length
+                      ? 'loaded'
+                      : 'noContent'
         })
+
       })
       .catch(e => {
         console.log(e)
-        this.setState({loading: false})
+        this.setState({
+          loading: false,
+          status: 'error'
+        })
       })
   }
-
-  clearForm() {
-    this.setState({
-      entities: [],
-      loading:  false,
-      loaded:   false
-    })
-  }
-
 }
 
 export default App;

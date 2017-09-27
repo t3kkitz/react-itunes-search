@@ -12,7 +12,7 @@ const Wrapper = styled.div`
 function CardList(props) {
   const {entities} = props;
   if (!entities.length) return null;
-  console.log('×××', entities[0]);
+  //console.log('×××', entities[0]);
   const cardItems = entities.map(card => <Card key={randomId()} {...card} />);
   return (
     <Wrapper>
