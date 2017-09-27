@@ -5,3 +5,7 @@ body {
   cursor: default;
   box-sizing: border-box;
 }
+
+*{
+  box-sizing: inherit;
+}
