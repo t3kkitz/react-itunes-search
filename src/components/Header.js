@@ -29,6 +29,7 @@ const Wrapper = styled.header`
 `;
 
 function Header(props) {
+
   const {query, media, handleInputChange, handleMediaChange} = props;
   return (
     <Wrapper>
