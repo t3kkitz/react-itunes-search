@@ -1,38 +1,12 @@
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import {
   getAPIurl,
   debounce
 } from './utils';
 import CardList from './components/CardList';
 import Message from './components/Message';
-import styled from 'styled-components';
-
-const Header = styled.header`
-  background:#212121;
-  padding:  8px;
-  display: flex;
-  justify-content: center;
-  form {
-  margin: 8px;
-  width: 100%;
-  max-width: 960px;
-  display: flex;
-  background:#FFFFFF;
-  height:  40px;
-  }
-  input{
-  flex: 1 0 auto;
-  height:  100%;
-  outline: none;
-  padding:  0 8px;
-  border: none;
-  font-size:  20px;
-  font-weight: bold;
-  } 
-  select{
-  height: 100%;
-  }
-`;
+import Header from './components/Header'
 
 class App extends Component {
   constructor() {
@@ -51,27 +25,11 @@ class App extends Component {
     const {status, entities, query, media} = this.state;
     return (
       <div className="App" onSubmit={this.handleFormSubmit}>
-        <Header>
-          <form>
-            <input type="text"
-                   onChange={this.handleInputChange}
-                   placeholder="iTunes search"
-                   value={query}
-                   autoFocus/>
-            <select value={media} onChange={this.handleMediaChange}>
-              <option value="movie">Movie</option>
-              <option value="podcast">Podcast</option>
-              <option value="music">Music</option>
-              <option value="musicVideo">MusicVideo</option>
-              <option value="audiobook">Audiobook</option>
-              <option value="shortFilm">ShortFilm</option>
-              <option value="tvShow">TV Show</option>
-              <option value="software">Software</option>
-              <option value="ebook">E-book</option>
-              <option value="all">All</option>
-            </select>
-          </form>
-        </Header>
+
+        <Header query={query}
+                media={media}
+                handleMediaChange={this.handleMediaChange}
+                handleInputChange={this.handleInputChange}/>
 
         {status === 'loaded'
           ? <CardList entities={entities}/>
