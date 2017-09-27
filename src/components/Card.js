@@ -20,6 +20,8 @@ const Wrapper = styled.div`
 
 const ArtworkBox = styled.a`
   display: inline-block;
+  min-width:  200px;
+  min-height:  200px;
 `;
 
 const Artwork = styled.img`
