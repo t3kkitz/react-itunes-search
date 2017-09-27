@@ -13,7 +13,7 @@ class App extends Component {
 
   state = {
     media: 'all',
-    query: '',
+    query: 'zeds dead',
     entities: [],
     loading: false,
     loaded: false
@@ -23,7 +23,7 @@ class App extends Component {
     return (
       <div className="App" onSubmit={this.handleFormSubmit}>
         <form>
-          <input type="text" onChange={this.handleInputChange} autoFocus/>
+          <input type="text" onChange={this.handleInputChange} value={this.state.query} autoFocus/>
           <select value={this.state.media} onChange={this.handleMediaChange}>
             <option value="movie">Movie</option>
             <option value="podcast">Podcast</option>
@@ -40,6 +40,10 @@ class App extends Component {
         <CardList entities={this.state.entities}/>
       </div>
     );
+  }
+
+  componentDidMount(){
+    this.loadCards()
   }
 
   componentDidUpdate(prevProps, prevState) {
